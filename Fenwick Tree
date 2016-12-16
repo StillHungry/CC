@@ -1,0 +1,24 @@
+
+const int MAXN= (ll)1e6;
+
+ll BIT[MAXN];
+ll n;
+
+void update(ll ind,ll val)
+{
+    for(;ind<=n;ind+=(ind&-(ind)))
+        BIT[ind]+=val;
+}
+
+
+ll query(ll ind)
+{
+    
+    
+    ll ans  =0  ;
+    for(;ind>0;ind-=ind&-ind)
+    {
+        ans+=BIT[ind];
+    }
+    return ans;
+}
