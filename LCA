@@ -1,0 +1,62 @@
+const int MAXN = (ll)1e5+10;
+const int MAXLG = 20;
+vector<ll>v1[MAXN];
+ll level[MAXN];
+ll vis[MAXN];
+ll val[MAXN];
+ll traverse[MAXN];
+map<pii, ll>m1;
+ll ans[MAXN];
+ll dp[MAXLG][MAXN];
+
+void DFSinitial(ll u)
+{
+    vis[u] = 1;
+    loop(i, v1[u].size())
+    {
+        ll to  = v1[u][i];
+        if(vis[to])
+            continue;
+        level[to]  = level[u]+1;
+        DFSinitial(to);
+        dp[0][to] = u;
+    }
+}
+
+
+void initializeit(ll N)
+{
+    for(ll i = 1;i<MAXLG;i+=1)
+    {
+        for(ll j  =1;j<=N;j+=1)
+        {
+            dp[i][j] = dp[i-1][dp[i-1][j]];
+        }
+    }
+}
+
+
+ll LCA(ll u,ll v)
+{
+    if(level[u]>level[v])
+        swap(u, v);
+    ll diff = level[v]-level[u];
+    loop(i, MAXLG)
+    {
+        if((diff>>i)&1)
+            v = dp[i][v];
+    }
+    if(u==v)
+        return u;
+    for(ll i =  MAXLG-1;i>=0;i-=1)
+    {
+        if(dp[i][u]&&dp[i][u]!=dp[i][v])
+        {
+            v = dp[i][v];
+            u =  dp[i][u];
+        }
+    }
+    return dp[0][u];
+}
+
+
