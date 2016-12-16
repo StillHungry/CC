@@ -1,0 +1,62 @@
+
+const int MAXN  = 5e5;//change the limits accordingly
+ll basearr[MAXN];
+ll seg[4*MAXN];
+
+
+void build(ll node,ll start,ll end)
+{
+    if(start==end)
+    {
+        seg[node] = basearr[start];
+    }
+    else{
+        ll mid = (start+end)/2;
+        build(2*node+1, start,  mid);
+        build(2*node+2, mid+1, end);
+        seg[node]  = max(seg[2*node+1],seg[2*node+2]);
+    }
+}
+
+
+
+ll query(ll node,ll start,ll end,ll lq,ll rq)
+{
+    if(start>=lq&&end<=rq)
+    {
+        return seg[node];
+    }
+    if(end<start||end<lq||start>rq)
+    {
+        return -(ll)1e18;
+    }
+    ll mid = (start+end)/2;
+    ll x = query(2*node+1, start, mid, lq, rq);
+    ll y = query(2*node+2, mid+1, end, lq, rq);
+    return max(x,y);
+}
+
+
+
+void update(ll node,ll start,ll end,ll ind,ll val)//replace
+{
+    
+    
+    if(start==end)
+    {
+        seg[node] = val;
+        basearr[ind] = val;
+        return;
+    }
+    ll mid = (start+end)/2;
+    if(ind>=start&&ind<=mid)
+    {
+        update(2*node+1, start, mid, ind, val);
+    }
+    else{
+        update(2*node+1, mid+1, end, ind, val);
+    }
+    seg[node] = max(seg[2*node+1],seg[2*node+2]);
+    
+    
+}
