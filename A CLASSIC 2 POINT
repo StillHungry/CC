@@ -1,0 +1,31 @@
+ll n;
+    cin>>n;
+    char array[n];
+    cin>>array;
+    map<char,ll>m1;
+    set<char>s1;
+    loop(i, n){
+        s1.insert(array[i]);
+    }
+    ll y = s1.size();
+    ll ans = INT_MAX;
+    ll curr = 0 ;
+    ll left  = 0 ;
+    for(ll  i =  0;i<n;i+=1){
+        m1[array[i]]+=1;
+        
+        if(m1[array[i]]==1){
+            curr+=1;
+        }
+        while(curr==y&&left<n){
+            ans = min(ans,i-left+1);
+            m1[array[left]]--;
+            if(m1[array[left]]==0){
+                curr--;
+            }
+            left++;
+        }
+    }
+    
+    cout<<ans;
+    
