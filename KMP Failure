@@ -1,0 +1,21 @@
+const int MAXN = (ll)1e6;
+ 
+ll F[MAXN];
+ //indexing is 1 - based :) Remember 
+void failure(string str)
+{
+    ll N = str.length();
+    ll j  =0  ;
+    for(ll i = 2;i<=N;i+=1)
+    {
+        while (j>0&&str[i-1]!=str[j]) {
+            j = F[j];
+        }
+        if(str[i-1]==str[j])
+        {
+            j+=1;
+        }
+        F[i] = j;
+    }
+}
+//Before using it for a question check it locally for a few cases
